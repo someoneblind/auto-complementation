@@ -2,9 +2,11 @@
 #include <string>
 #include <string.h>
 #include <memory>
+#include <stdio.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include "complementer.h"
-#include "conio.h"
 
 #define DEVNAME_NAME    "devname"
 #define UARTSPEED_NAME  "uartspeed"
@@ -51,11 +53,20 @@ int main()
     set<string> uartspeeds = { "9600", "19200", "57600", "115200" };
     set<string> inputtypes = { "ascii", "hex", "dec" };
 
+    struct termios oldt, newt;
+
     Complementer complementer;
     string str;
     char symbol;
+
+    tcgetattr(STDIN_FILENO, &oldt);
+    newt = oldt;
+    newt.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &newt);
+
     while (1) {
-        symbol = static_cast<char>(getch());
+        symbol = static_cast<char>(getchar());
+
         if ((symbol == '\t') && (str[0] == '\\')) {
 
             if (count(str.begin(), str.end(), ' ') == 0)
@@ -103,6 +114,10 @@ int main()
                 cout << static_cast<char>(symbol);
                 break;
             }
+            else {
+                str.clear();
+                cout << static_cast<char>(symbol);
+            }
 
         }
         else if ((symbol == '\b') || (symbol == 127)) {
@@ -116,5 +131,8 @@ int main()
             cout << static_cast<char>(symbol);
         }
     }
+
+    tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
+
     return 0;
 }

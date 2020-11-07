@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.8)
 project(auto-complementation)
 
 set(SOURCE complementer.cpp main.cpp)
-set(HEADER complementer.h conio.h)
+set(HEADER complementer.h)
 
 set(GCC_COVERAGE_COMPILE_FLAGS "-std=c++11")
 

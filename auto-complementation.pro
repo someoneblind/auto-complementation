@@ -8,4 +8,3 @@ SOURCES += main.cpp \
 
 HEADERS += \
     complementer.h \
-    conio.h
