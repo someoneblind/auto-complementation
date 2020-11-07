@@ -10,7 +10,9 @@ ORIGINAL SOURCE: https://github.com/DevAlone/BashLikeComplementation.git
 
 ## Build
 
+```
 mkdir build
 cd build
 cmake ..
 make
+```
